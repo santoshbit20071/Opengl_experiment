@@ -74,12 +74,14 @@ GLuint CreateAndAttachShaderProgram() {
 GLuint CreateVAO() {
   GLfloat vertices[] = {
     0.5, 0.5, 0.0,
-    0.5, -0.5, 0.0,
-    -0.5, -0.5, 0.0,
-    -0.5, 0.5, 0.0
+    0.5, 0.0, 0.0,
+    0.0, 0.0, 0.0,
+    0.9, 0.5, 0.0,
+    0.9, 0.0, 0.0,
+    0.6, 0.0, 0.0,
   };
 
-  GLfloat indexes[] = {
+  GLint indexes[] = {
     0, 1, 2,
     2, 3, 1
   };
@@ -148,7 +150,8 @@ int main(int argc, char* argv[]) {
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shaderprogram);
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     glfwSwapBuffers(window);

@@ -7,7 +7,7 @@ set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-std=c++11")
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11")
 set(LINKER_FLAGS "-ldl -lGL -lXcursor -rdynamic -lX11 -lpthread -lXrandr -lXi -lXinerama")
 
-include_directories(${CMAKE_SOURCE_DIR}/../install/usr/include)
+include_directories(${CMAKE_SOURCE_DIR}/../../install/usr/include)
 
 add_library(glfwlib STATIC IMPORTED)
 set_target_properties(glfwlib PROPERTIES IMPORTED_LOCATION /home/santosh/PERSONAL/opengl_learning/install/usr/lib/libglfw3.a)
