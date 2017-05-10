@@ -71,14 +71,17 @@ GLuint CreateAndAttachShaderProgram() {
   return program;
 }
 
-GLuint CreateVAO() {
-  GLfloat vertices[] = {
+void CreateVAO(GLuint* arr) {
+  GLfloat vertices1[] = {
     0.5, 0.5, 0.0,
     0.5, 0.0, 0.0,
-    0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0
+  };
+
+  GLfloat vertices2[] = {
     0.9, 0.5, 0.0,
     0.9, 0.0, 0.0,
-    0.6, 0.0, 0.0,
+    0.6, 0.0, 0.0
   };
 
   GLint indexes[] = {
@@ -86,15 +89,17 @@ GLuint CreateVAO() {
     2, 3, 1
   };
 
-  GLuint vbo, vao, ebo;
-  glGenBuffers(1, &vbo);
+  GLuint vbo1, vao1, vbo2, vao2, ebo;
+  glGenBuffers(1, &vbo1);
+  glGenBuffers(1, &vbo2);
   glGenBuffers(1, &ebo);
-  glGenVertexArrays(1, &vao);
+  glGenVertexArrays(1, &vao1);
+  glGenVertexArrays(1, &vao2);
 
   // vao setup and binding
-  glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  glBindVertexArray(vao1);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo1);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexes), indexes, GL_STATIC_DRAW);
@@ -104,7 +109,22 @@ GLuint CreateVAO() {
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
   glBindVertexArray(0);
 
-  return vao;
+
+  // vao setup and binding
+  glBindVertexArray(vao2);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo2);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexes), indexes, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,  3* sizeof(GLfloat), (GLvoid*)0);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+  glBindVertexArray(0);
+
+  arr[0] = vao1;
+  arr[1] = vao2;
 }
 
 int main(int argc, char* argv[]) {
@@ -138,7 +158,8 @@ int main(int argc, char* argv[]) {
 
   glfwSetKeyCallback(window, key_callback);
 
-  GLuint vao = CreateVAO();
+  GLuint vaos[2];
+  CreateVAO(vaos);
 
   GLint shaderprogram = CreateAndAttachShaderProgram();
 
@@ -149,8 +170,15 @@ int main(int argc, char* argv[]) {
     glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shaderprogram);
-    glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glBindVertexArray(vaos[0]);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+
+    // second traingle
+    glBindVertexArray(vaos[1]);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
     //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
