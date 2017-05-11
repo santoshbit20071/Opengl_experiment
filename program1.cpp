@@ -97,27 +97,25 @@ GLuint CreateVAO() {
   GLfloat vertices[] = {
       0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // Top Right
       0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // Bottom Right
+      -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f,  // Top Left 
+
+      0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // Bottom Right
       -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // Bottom Left
       -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // Top Left 
   };
 
- GLuint indices[] = {  // Note that we start from 0!
-     0, 1, 3, // First Triangle
-     1, 2, 3  // Second Triangle
- };
 
 
   GLuint vbo1, vao1, ebo1;
   glGenBuffers(1, &vbo1);
-  glGenBuffers(1, &ebo1);
   glGenVertexArrays(1, &vao1);
 
   // vao setup and binding
   glBindVertexArray(vao1);
     glBindBuffer(GL_ARRAY_BUFFER, vbo1);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo1);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo1);
+    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,  8* sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
@@ -173,11 +171,11 @@ class GLFWRunner {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // opengl rendering
+        glBindTexture(GL_TEXTURE_2D, tid);
         shader_program.Use();
         glBindVertexArray(vao);
-        glBindTexture(GL_TEXTURE_2D, tid);
-        //glDrawArrays(GL_TRIANGLES, 0, 4);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0,6);
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
         glBindTexture(GL_TEXTURE_2D, 0);
 
