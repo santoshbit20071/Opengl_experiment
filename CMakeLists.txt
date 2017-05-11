@@ -15,5 +15,9 @@ set_target_properties(glfwlib PROPERTIES IMPORTED_LOCATION /home/santosh/PERSONA
 add_library(glewlib STATIC IMPORTED)
 set_target_properties(glewlib PROPERTIES IMPORTED_LOCATION /home/santosh/PERSONAL/opengl_learning/install/usr/lib64/libGLEW.a)
 
+add_library(soillib STATIC IMPORTED)
+set_target_properties(soillib PROPERTIES IMPORTED_LOCATION /home/santosh/PERSONAL/opengl_learning/install/usr/lib/libSOIL.a)
+
+
 Add_executable(openglexp program1.cpp)
-target_link_libraries(openglexp glewlib glfwlib ${LINKER_FLAGS})
+target_link_libraries(openglexp soillib glewlib glfwlib ${LINKER_FLAGS})
